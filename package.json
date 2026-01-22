@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json}\""
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -32,10 +33,13 @@
     "@types/react-redux": "^7.1.34",
     "@types/styled-components": "^5.1.36",
     "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.4",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "15.0.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }
