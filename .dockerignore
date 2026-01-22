@@ -1,0 +1,6 @@
+node_modules
+.next
+.git
+.vscode
+docker-compose.yml
+README.md
