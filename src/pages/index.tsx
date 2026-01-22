@@ -1,5 +1,5 @@
-import Head from "next/head";
-import styled from "styled-components";
+import Head from 'next/head';
+import styled from 'styled-components';
 
 const Container = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const Title = styled.h1`
 const Square = styled.div<{ $color: string }>`
   width: 100px;
   height: 100px;
-  background-color: ${({ theme, $color }) => 
+  background-color: ${({ theme, $color }) =>
     $color === 'primary' ? theme.colors.primary : theme.colors.textSecondary};
   display: flex;
   align-items: center;
@@ -34,7 +34,7 @@ export default function Home() {
 
       <Container>
         <Title>Teste de Estilização</Title>
-        
+
         <div style={{ display: 'flex', gap: '10px' }}>
           <Square $color="primary">Primary</Square>
           <Square $color="secondary">Secondary</Square>
