@@ -13,7 +13,7 @@ interface ProductsResponse {
   products: IProductAPI[];
 }
 
-export const getProducts = async (page = 1, rows = 10) => {
+export const getProducts = async (page = 1, rows = 8) => {
   const { data } = await api.get<ProductsResponse>(
     `/products?page=${page}&rows=${rows}&sortBy=price&orderBy=ASC`,
   );
