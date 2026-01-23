@@ -7,6 +7,7 @@ declare module 'styled-components' {
       bgMain: string;
       bgCard: string;
       bgInput: string;
+      bgSecondary: string;
       textSecondary: string;
       white: string;
     };
