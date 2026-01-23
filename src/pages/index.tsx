@@ -1,46 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { getProducts } from '@/services/api';
 import { ProductCard } from '@/components/ProductCard';
-import {
-  HomeContainer,
-  ProductGrid,
-  LoadingContainer,
-} from '@/styles/pages/Home';
+import * as S from '@/styles/pages/Home';
 
 export default function Home() {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['products'],
-    queryFn: () => getProducts(1, 10),
+    queryKey: ['products', 1],
+    queryFn: () => getProducts(1, 8),
   });
 
-  if (isLoading) {
-    return <LoadingContainer>Carregando artefatos...</LoadingContainer>;
-  }
-
-  if (isError) {
+  if (isLoading)
+    return <S.FeedbackMessage>Carregando artefatos...</S.FeedbackMessage>;
+  if (isError)
     return (
-      <LoadingContainer>
-        Erro ao carregar produtos do servidor.
-      </LoadingContainer>
+      <S.FeedbackMessage>Erro ao conectar com o servidor.</S.FeedbackMessage>
     );
-  }
 
   return (
-    <HomeContainer>
-      <ProductGrid>
+    <S.Container>
+      <S.Grid>
         {data?.products.map((product) => (
           <ProductCard
             key={product.id}
             product={{
-              id: product.id,
-              name: product.name,
-              image: product.image,
-              description: product.description,
+              ...product,
               price: parseFloat(product.price),
             }}
           />
         ))}
-      </ProductGrid>
-    </HomeContainer>
+      </S.Grid>
+    </S.Container>
   );
 }
