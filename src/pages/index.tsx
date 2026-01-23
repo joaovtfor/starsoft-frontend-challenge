@@ -1,45 +1,46 @@
-import Head from 'next/head';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  gap: 20px;
-`;
-
-const Title = styled.h1`
-  color: ${({ theme }) => theme.colors.white};
-`;
-
-const Square = styled.div<{ $color: string }>`
-  width: 100px;
-  height: 100px;
-  background-color: ${({ theme, $color }) =>
-    $color === 'primary' ? theme.colors.primary : theme.colors.textSecondary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${({ theme }) => theme.borderRadius};
-`;
+import { useQuery } from '@tanstack/react-query';
+import { getProducts } from '@/services/api';
+import { ProductCard } from '@/components/ProductCard';
+import {
+  HomeContainer,
+  ProductGrid,
+  LoadingContainer,
+} from '@/styles/pages/Home';
 
 export default function Home() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => getProducts(1, 10),
+  });
+
+  if (isLoading) {
+    return <LoadingContainer>Carregando artefatos...</LoadingContainer>;
+  }
+
+  if (isError) {
+    return (
+      <LoadingContainer>
+        Erro ao carregar produtos do servidor.
+      </LoadingContainer>
+    );
+  }
+
   return (
-    <>
-      <Head>
-        <title>Teste de Ambiente</title>
-      </Head>
-
-      <Container>
-        <Title>Teste de Estilização</Title>
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <Square $color="primary">Primary</Square>
-          <Square $color="secondary">Secondary</Square>
-        </div>
-      </Container>
-    </>
+    <HomeContainer>
+      <ProductGrid>
+        {data?.products.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={{
+              id: product.id,
+              name: product.name,
+              image: product.image,
+              description: product.description,
+              price: parseFloat(product.price),
+            }}
+          />
+        ))}
+      </ProductGrid>
+    </HomeContainer>
   );
 }
