@@ -6,6 +6,7 @@ export const theme: DefaultTheme = {
     bgMain: '#232323',
     bgCard: '#191A20',
     bgInput: '#393939',
+    bgSecondary: '#22232C',
     textSecondary: '#CCCCCC',
     white: '#FFFFFF',
   },
