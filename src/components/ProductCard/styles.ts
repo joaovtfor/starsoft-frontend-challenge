@@ -1,13 +1,35 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+interface OverlayProps {
+  isVisible: boolean;
+}
+
+interface BuyButtonProps {
+  isAdded?: boolean;
+}
+
+const fadeInLetter = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const CardContainer = styled.article`
   background-color: ${({ theme }) => theme.colors.bgCard};
-  border-radius: ${({ theme }) => theme.borderRadius};
+  border-radius: 8px;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   color: ${({ theme }) => theme.colors.white};
+  position: relative; 
+  overflow: hidden; 
+  height: 420px;  
   transition: transform 0.2s;
 
   &:hover {
@@ -21,7 +43,6 @@ export const ImageContainer = styled.div`
   height: 200px;
   width: 100%;
   position: relative;
-  overflow: hidden;
 `;
 
 export const Title = styled.h3`
@@ -30,11 +51,78 @@ export const Title = styled.h3`
   font-weight: 600;
 `;
 
-export const Description = styled.p`
+export const DescriptionRow = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 1.3rem;
+`;
+
+export const ShortDescription = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.85rem;
   margin: 0;
-  line-height: 1.4;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+`;
+
+export const ToggleButton = styled.button`
+  background: transparent;
+  border: none;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+  
+  &:hover { text-decoration: underline; }
+`;
+
+export const DescriptionOverlay = styled.div<OverlayProps>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 30, 30, 0.98); 
+  padding: 30px 20px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  pointer-events: ${({ isVisible }) => (isVisible ? 'all' : 'none')};
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s;
+`;
+
+export const FullDescriptionText = styled.p`
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.white};
+  overflow-y: auto;
+  flex: 1;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: ${({ theme }) => theme.colors.primary}; border-radius: 4px; }
+`;
+
+export const CloseButton = styled.button`
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 15px;
+  cursor: pointer;
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 export const PriceContainer = styled.div`
@@ -44,13 +132,11 @@ export const PriceContainer = styled.div`
   font-weight: 700;
   font-size: 1.1rem;
   margin-top: auto;
-
-  svg {
-    color: #627eea;
-  }
+  padding-top: 10px;
+  svg { color: #627EEA; }
 `;
 
-export const BuyButton = styled.button`
+export const BuyButton = styled.button<BuyButtonProps>`
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   padding: 12px;
@@ -59,14 +145,32 @@ export const BuyButton = styled.button`
   text-transform: uppercase;
   width: 100%;
   border: none;
-  cursor: pointer;
-  transition: filter 0.2s;
+  transition: background-color 0.3s ease; 
+  cursor: ${({ isAdded }) => (isAdded ? 'default' : 'pointer')};
+  min-height: 45px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  &:hover {
-    filter: brightness(1.1);
-  }
+  ${({ isAdded }) => !isAdded && css`
+    &:hover {
+      filter: brightness(1.1);
+    }
+    &:active {
+      transform: scale(0.98);
+    }
+  `}
+`;
 
-  &:active {
-    transform: scale(0.98);
-  }
+export const LetterContainer = styled.span`
+  display: flex;
+  justify-content: center;
+`;
+
+export const AnimatedLetter = styled.span<{ $delay: number }>`
+  display: inline-block;
+  opacity: 0;
+  animation: ${fadeInLetter} 0.3s ease forwards;
+  animation-delay: ${({ $delay }) => $delay}s;
+  font-size: 0.75rem;
 `;

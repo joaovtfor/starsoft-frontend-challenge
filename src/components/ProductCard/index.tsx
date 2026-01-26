@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
-import { FaEthereum } from 'react-icons/fa';
-
+import { EthereumIcon } from '@/components/Icons';
 import { IProduct } from '@/types';
 import { addToCart } from '@/store/slices/cartSlice';
 import * as S from './styles';
@@ -12,13 +12,18 @@ interface ProductCardProps {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useDispatch();
+  const [showDetails, setShowDetails] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    setIsAdded(true);
   };
 
+  const successText = "ADICIONADO AO CARRINHO";
+
   return (
-    <S.CardContainer>
+    <S.CardContainer onMouseLeave={() => setShowDetails(false)}>
       <S.ImageContainer>
         <Image
           src={product.image}
@@ -31,16 +36,51 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <S.Title>{product.name}</S.Title>
 
-      <S.Description>
-        {product.description || 'Descrição indisponível.'}
-      </S.Description>
+      <S.DescriptionRow>
+        <S.ShortDescription>
+          {product.description || "Sem descrição."}
+        </S.ShortDescription>
+
+        {product.description && (
+          <S.ToggleButton onClick={() => setShowDetails(true)}>
+            ...Mais
+          </S.ToggleButton>
+        )}
+      </S.DescriptionRow>
 
       <S.PriceContainer>
-        <FaEthereum size={18} />
-        {product.price.toFixed(2)} ETH
+        <EthereumIcon size={18} />
+        {product.price.toFixed(0)} ETH
       </S.PriceContainer>
 
-      <S.BuyButton onClick={handleAddToCart}>Comprar</S.BuyButton>
+      <S.BuyButton
+        onClick={handleAddToCart}
+        disabled={isAdded}
+        isAdded={isAdded}
+      >
+        {!isAdded ? (
+          'COMPRAR'
+        ) : (
+          <S.LetterContainer>
+            {successText.split("").map((char, index) => (
+              <S.AnimatedLetter key={index} $delay={index * 0.03}>
+                {char === " " ? "\u00A0" : char}
+              </S.AnimatedLetter>
+            ))}
+          </S.LetterContainer>
+        )}
+      </S.BuyButton>
+
+      <S.DescriptionOverlay isVisible={showDetails}>
+        <S.Title style={{ marginBottom: 15 }}>{product.name}</S.Title>
+        <S.FullDescriptionText>{product.description}</S.FullDescriptionText>
+        <S.CloseButton onClick={(e) => {
+          e.stopPropagation();
+          setShowDetails(false);
+        }}>
+          Fechar detalhes
+        </S.CloseButton>
+      </S.DescriptionOverlay>
     </S.CardContainer>
   );
 };
