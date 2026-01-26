@@ -20,11 +20,10 @@ export const Logo = styled.div`
 `;
 
 export const CartButton = styled.button`
-  position: relative;
   background: transparent;
-  color: ${({ theme }) => theme.colors.white};
   display: flex;
   align-items: center;
+  gap: 8px;
   padding: 0.5rem;
   border: none;
   cursor: pointer;
@@ -34,14 +33,9 @@ export const CartButton = styled.button`
   }
 `;
 
-export const Badge = styled.span`
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  border-radius: 50%;
-  padding: 0.125rem 0.375rem;
-  font-size: 0.625rem;
-  font-weight: bold;
+export const CartCount = styled.span`
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
 `;

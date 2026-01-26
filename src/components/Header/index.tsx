@@ -21,7 +21,8 @@ export const Header = () => {
       <Link href="/cart">
         <S.CartButton aria-label="Ir para o carrinho">
           <PiHandbagLight size={24} color="#FF9F47" />
-          {count > 0 && <S.Badge>{count}</S.Badge>}
+
+          <S.CartCount>{count}</S.CartCount>
         </S.CartButton>
       </Link>
     </S.Container>
