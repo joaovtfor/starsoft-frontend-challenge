@@ -14,13 +14,23 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
     setIsAdded(true);
+
+    setTimeout(() => {
+      setIsExiting(true);
+
+      setTimeout(() => {
+        setIsAdded(false);
+        setIsExiting(false);
+      }, 800);
+    }, 2000);
   };
 
-  const successText = "ADICIONADO AO CARRINHO";
+  const successText = 'ADICIONADO AO CARRINHO';
 
   return (
     <S.CardContainer onMouseLeave={() => setShowDetails(false)}>
@@ -38,12 +48,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <S.DescriptionRow>
         <S.ShortDescription>
-          {product.description || "Sem descrição."}
+          {product.description || 'Sem descrição.'}
         </S.ShortDescription>
 
         {product.description && (
           <S.ToggleButton onClick={() => setShowDetails(true)}>
-            ...Mais
+            Mais
           </S.ToggleButton>
         )}
       </S.DescriptionRow>
@@ -55,16 +65,18 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <S.BuyButton
         onClick={handleAddToCart}
-        disabled={isAdded}
-        isAdded={isAdded}
+        disabled={isAdded || isExiting}
+        isAdded={isAdded || isExiting}
       >
-        {!isAdded ? (
-          'COMPRAR'
+        {isExiting && <S.SweepBar />}
+
+        {!isAdded && !isExiting ? (
+          <S.BuyTextContainer>COMPRAR</S.BuyTextContainer>
         ) : (
-          <S.LetterContainer>
-            {successText.split("").map((char, index) => (
+          <S.LetterContainer $isExiting={isExiting}>
+            {successText.split('').map((char, index) => (
               <S.AnimatedLetter key={index} $delay={index * 0.03}>
-                {char === " " ? "\u00A0" : char}
+                {char === ' ' ? '\u00A0' : char}
               </S.AnimatedLetter>
             ))}
           </S.LetterContainer>
@@ -74,10 +86,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <S.DescriptionOverlay isVisible={showDetails}>
         <S.Title style={{ marginBottom: 15 }}>{product.name}</S.Title>
         <S.FullDescriptionText>{product.description}</S.FullDescriptionText>
-        <S.CloseButton onClick={(e) => {
-          e.stopPropagation();
-          setShowDetails(false);
-        }}>
+        <S.CloseButton
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDetails(false);
+          }}
+        >
           Fechar detalhes
         </S.CloseButton>
       </S.DescriptionOverlay>
