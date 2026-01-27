@@ -18,3 +18,9 @@ export interface IProduct {
 export interface ICartItem extends IProduct {
   quantity: number;
 }
+
+export interface ProductsResponse {
+  products: IProductAPI[];
+  count: number;
+  page: number;
+}
