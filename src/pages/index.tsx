@@ -1,34 +1,62 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getProducts } from '@/services/api';
 import { ProductCard } from '@/components/ProductCard';
+import { PaginationLoader } from '@/components/PaginationLoader';
 import * as S from '@/styles/pages/Home';
+import { ProductsResponse } from '@/types';
+import { ProductCardSkeleton } from '@/components/ProductCard/Skeleton';
 
 export default function Home() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['products', 1],
-    queryFn: () => getProducts(1, 8),
-  });
+  const { data, isLoading, isError, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery<ProductsResponse>({
+      queryKey: ['products'],
+      queryFn: ({ pageParam = 1 }) => getProducts(pageParam as number, 8),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        const totalPages = Math.ceil(lastPage.count / 8);
+        const currentPage = allPages.length;
 
-  if (isLoading)
-    return <S.FeedbackMessage>Carregando artefatos...</S.FeedbackMessage>;
-  if (isError)
-    return (
-      <S.FeedbackMessage>Erro ao conectar com o servidor.</S.FeedbackMessage>
-    );
+        if (currentPage < totalPages) {
+          return currentPage + 1;
+        }
+
+        return undefined;
+      },
+    });
+
+  if (isError) return <S.FeedbackMessage>Erro ao conectar.</S.FeedbackMessage>;
+
+  const allProducts = data?.pages.flatMap((page) => page.products) || [];
 
   return (
     <S.Container>
       <S.Grid>
-        {data?.products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={{
-              ...product,
-              price: parseFloat(product.price),
-            }}
-          />
-        ))}
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <ProductCardSkeleton key={`init-skel-${i}`} index={i} />
+            ))
+          : allProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                index={index}
+                product={{ ...product, price: parseFloat(product.price) }}
+              />
+            ))}
+
+        {isFetchingNextPage &&
+          Array.from({ length: 8 }).map((_, i) => (
+            <ProductCardSkeleton key={`next-skel-${i}`} index={i} />
+          ))}
       </S.Grid>
+
+      {!isLoading && (
+        <PaginationLoader
+          totalItems={data?.pages[0].count || 0}
+          currentItems={allProducts.length}
+          loading={isFetchingNextPage}
+          onLoadMore={() => fetchNextPage()}
+        />
+      )}
     </S.Container>
   );
 }

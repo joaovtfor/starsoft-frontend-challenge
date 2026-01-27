@@ -4,28 +4,27 @@ interface IconProps {
   size?: number;
   color?: string;
   className?: string;
-  style?: React.CSSProperties; // Adicionado para flexibilidade extra
+  style?: React.CSSProperties;
 }
 
 export const EthereumIcon = ({
   size = 18,
-  color = '#FFFFFF', // MUDADO: Branco para aparecer no fundo azul
+  color = '#FFFFFF',
   className,
   style,
 }: IconProps) => {
-  // Calculamos um tamanho para o container (círculo) um pouco maior que o ícone
   const containerSize = size + 12;
 
   return (
     <div
       className={className}
       style={{
-        backgroundColor: '#627EEA', // Fundo Azul Ethereum
-        borderRadius: '50%', // Círculo perfeito
-        display: 'flex', // Centralizar o SVG
+        backgroundColor: '#627EEA',
+        borderRadius: '50%',
+        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: containerSize, // Tamanho fixo para garantir que é redondo
+        width: containerSize,
         height: containerSize,
         ...style,
       }}

@@ -37,5 +37,5 @@ export const CartCount = styled.span`
   color: ${({ theme }) => theme.colors.white};
   font-size: 1rem;
   font-weight: 600;
-  font-family: inherit;
+  font-family: ${({ theme }) => theme.font};
 `;
