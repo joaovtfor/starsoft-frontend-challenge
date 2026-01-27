@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
 interface OverlayProps {
-  isVisible: boolean;
+  $isVisible: boolean;
 }
 
 const cardEntrance = keyframes`
@@ -104,8 +104,8 @@ export const DescriptionOverlay = styled.div<OverlayProps>`
   z-index: 20;
   display: flex;
   flex-direction: column;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
+  visibility: ${({ $isVisible }) => ($isVisible ? 'visible' : 'hidden')};
   transition:
     opacity 0.2s ease-in-out,
     visibility 0.2s;

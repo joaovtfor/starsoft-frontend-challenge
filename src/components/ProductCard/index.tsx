@@ -18,26 +18,8 @@ interface ProductCardProps {
 export const ProductCard = ({ product, index }: ProductCardProps) => {
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
-  const [isAdded, setIsAdded] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
-  const handleAddToCart = () => {
-    dispatch(addToCart(product));
-    setIsAdded(true);
-
-    setTimeout(() => {
-      setIsExiting(true);
-
-      setTimeout(() => {
-        setIsAdded(false);
-        setIsExiting(false);
-      }, 800);
-    }, 2000);
-  };
-
-  const successText = 'ADICIONADO AO CARRINHO';
 
   return (
     <S.CardContainer onMouseLeave={() => setShowDetails(false)} $index={index}>
@@ -66,7 +48,7 @@ export const ProductCard = ({ product, index }: ProductCardProps) => {
               padding: '10px',
               opacity: isLoading ? 0 : 1,
             }}
-            onLoadingComplete={() => setIsLoading(false)}
+            onLoad={() => setIsLoading(false)}
             onError={() => {
               setHasError(true);
               setIsLoading(false);
@@ -100,7 +82,7 @@ export const ProductCard = ({ product, index }: ProductCardProps) => {
         onAction={() => dispatch(addToCart(product))}
       />
 
-      <S.DescriptionOverlay isVisible={showDetails}>
+      <S.DescriptionOverlay $isVisible={showDetails}>
         <S.Title style={{ marginBottom: 15 }}>{product.name}</S.Title>
         <S.FullDescriptionText>{product.description}</S.FullDescriptionText>
         <S.CloseButton
