@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { FaSpinner, FaBoxOpen } from 'react-icons/fa';
 
 import { EthereumIcon } from '@/components/Icons';
+import { Button } from '@/components/Button';
 import { IProduct } from '@/types';
 import { addToCart } from '@/store/slices/cartSlice';
 
@@ -89,29 +90,15 @@ export const ProductCard = ({ product, index }: ProductCardProps) => {
       </S.DescriptionRow>
 
       <S.PriceContainer>
-        <EthereumIcon size={18} />
+        <EthereumIcon size={20} />
         {product.price.toFixed(0)} ETH
       </S.PriceContainer>
 
-      <S.BuyButton
-        onClick={handleAddToCart}
-        disabled={isAdded || isExiting}
-        isAdded={isAdded || isExiting}
-      >
-        {isExiting && <S.SweepBar />}
-
-        {!isAdded && !isExiting ? (
-          <S.BuyTextContainer>COMPRAR</S.BuyTextContainer>
-        ) : (
-          <S.LetterContainer $isExiting={isExiting}>
-            {successText.split('').map((char, index) => (
-              <S.AnimatedLetter key={index} $delay={index * 0.03}>
-                {char === ' ' ? '\u00A0' : char}
-              </S.AnimatedLetter>
-            ))}
-          </S.LetterContainer>
-        )}
-      </S.BuyButton>
+      <Button
+        initialText="COMPRAR"
+        successText="ADICIONADO AO CARRINHO"
+        onAction={() => dispatch(addToCart(product))}
+      />
 
       <S.DescriptionOverlay isVisible={showDetails}>
         <S.Title style={{ marginBottom: 15 }}>{product.name}</S.Title>

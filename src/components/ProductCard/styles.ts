@@ -1,45 +1,8 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface OverlayProps {
   isVisible: boolean;
 }
-
-interface BuyButtonProps {
-  isAdded?: boolean;
-}
-
-const fadeInLetter = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const sweepEffect = keyframes`
-  0% { left: -100%; }
-  50% { left: 0%; }
-  100% { left: 100%; }
-`;
-
-const fadeOut = keyframes`
-  from { opacity: 1; filter: blur(0); }
-  to { opacity: 0; filter: blur(4px); }
-`;
-
-const fadeInButtonText = keyframes`
-  from { 
-    opacity: 0; 
-    transform: scale(0.95);
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1);
-  }
-`;
 
 const cardEntrance = keyframes`
   from {
@@ -68,7 +31,7 @@ export const CardContainer = styled.article<{ $index: number }>`
   position: relative;
   overflow: hidden;
   height: 420px;
-  opacity: 0; // Começa invisível
+  opacity: 0;
   animation: ${cardEntrance} 0.5s ease-out forwards;
   animation-delay: ${({ $index }) => ($index % 8) * 0.1}s;
   transition:
@@ -142,10 +105,7 @@ export const DescriptionOverlay = styled.div<OverlayProps>`
   display: flex;
   flex-direction: column;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  pointer-events: ${({ isVisible }) => (isVisible ? 'all' : 'none')};
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
-  transition: opacity 0.3s ease-in-out;
   transition:
     opacity 0.2s ease-in-out,
     visibility 0.2s;
@@ -196,76 +156,6 @@ export const PriceContainer = styled.div`
   svg {
     color: #627eea;
   }
-`;
-
-export const BuyButton = styled.button<BuyButtonProps>`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
-  padding: 12px;
-  border-radius: 4px;
-  font-weight: 600;
-  text-transform: uppercase;
-  width: 100%;
-  border: none;
-  transition: background-color 0.5s ease;
-  cursor: ${({ isAdded }) => (isAdded ? 'default' : 'pointer')};
-  position: relative;
-  overflow: hidden;
-  min-height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${({ isAdded }) =>
-    !isAdded &&
-    css`
-      &:hover {
-        filter: brightness(1.1);
-      }
-      &:active {
-        transform: scale(0.98);
-      }
-    `}
-`;
-
-export const LetterContainer = styled.span<{ $isExiting: boolean }>`
-  display: flex;
-  justify-content: center;
-
-  ${({ $isExiting }) =>
-    $isExiting &&
-    css`
-      animation: ${fadeOut} 0.4s ease forwards;
-      animation-delay: 0.2s;
-    `}
-`;
-
-export const AnimatedLetter = styled.span<{ $delay: number }>`
-  display: inline-block;
-  opacity: 0;
-  animation: ${fadeInLetter} 0.3s ease forwards;
-  animation-delay: ${({ $delay }) => $delay}s;
-  font-size: 0.75rem;
-`;
-
-export const SweepBar = styled.div`
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    ${({ theme }) => theme.colors.primary}
-  );
-  z-index: 5;
-  animation: ${sweepEffect} 0.8s ease-in-out forwards;
-`;
-
-export const BuyTextContainer = styled.span`
-  animation: ${fadeInButtonText} 0.3s ease-out forwards;
-  font-weight: 600;
 `;
 
 export const LoadingWrapper = styled.div`

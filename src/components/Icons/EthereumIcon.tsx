@@ -13,7 +13,7 @@ export const EthereumIcon = ({
   className,
   style,
 }: IconProps) => {
-  const containerSize = size + 12;
+  const containerSize = size + 6;
 
   return (
     <div
