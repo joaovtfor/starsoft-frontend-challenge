@@ -42,6 +42,7 @@ export const ProductCard = ({ product, index }: ProductCardProps) => {
             src={product.image}
             alt={product.name}
             fill
+            priority={index < 4}
             sizes="(max-width: 768px) 100vw, 33vw"
             style={{
               objectFit: 'contain',
