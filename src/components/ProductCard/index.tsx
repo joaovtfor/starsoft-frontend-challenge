@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
+import { FaSpinner, FaBoxOpen } from 'react-icons/fa';
+
 import { EthereumIcon } from '@/components/Icons';
 import { IProduct } from '@/types';
 import { addToCart } from '@/store/slices/cartSlice';
+
 import * as S from './styles';
 
 interface ProductCardProps {
   product: IProduct;
+  index: number;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, index }: ProductCardProps) => {
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -33,15 +39,39 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const successText = 'ADICIONADO AO CARRINHO';
 
   return (
-    <S.CardContainer onMouseLeave={() => setShowDetails(false)}>
+    <S.CardContainer onMouseLeave={() => setShowDetails(false)} $index={index}>
       <S.ImageContainer>
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          style={{ objectFit: 'contain', padding: '10px' }}
-        />
+        {isLoading && !hasError && (
+          <S.LoadingWrapper>
+            <FaSpinner className="spinner" />
+          </S.LoadingWrapper>
+        )}
+
+        {hasError && (
+          <S.ErrorWrapper>
+            <FaBoxOpen size={40} />
+            <span>Imagem indisponível</span>
+          </S.ErrorWrapper>
+        )}
+
+        {!hasError && (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            style={{
+              objectFit: 'contain',
+              padding: '10px',
+              opacity: isLoading ? 0 : 1,
+            }}
+            onLoadingComplete={() => setIsLoading(false)}
+            onError={() => {
+              setHasError(true);
+              setIsLoading(false);
+            }}
+          />
+        )}
       </S.ImageContainer>
 
       <S.Title>{product.name}</S.Title>

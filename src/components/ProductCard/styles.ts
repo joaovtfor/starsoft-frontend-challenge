@@ -41,9 +41,25 @@ const fadeInButtonText = keyframes`
   }
 `;
 
-export const CardContainer = styled.article`
+const cardEntrance = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+export const CardContainer = styled.article<{ $index: number }>`
   background-color: ${({ theme }) => theme.colors.bgCard};
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -52,6 +68,9 @@ export const CardContainer = styled.article`
   position: relative;
   overflow: hidden;
   height: 420px;
+  opacity: 0; // Começa invisível
+  animation: ${cardEntrance} 0.5s ease-out forwards;
+  animation-delay: ${({ $index }) => ($index % 8) * 0.1}s;
   transition:
     transform 0.2s,
     border 0.3s,
@@ -66,7 +85,7 @@ export const CardContainer = styled.article`
 
 export const ImageContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.bgSecondary};
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
   height: 200px;
   width: 100%;
   position: relative;
@@ -103,9 +122,11 @@ export const ToggleButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   white-space: nowrap;
+  opacity: 0.5;
+  transition: opacity 0.3s;
 
   &:hover {
-    text-decoration: underline;
+    opacity: 1;
   }
 `;
 
@@ -245,4 +266,42 @@ export const SweepBar = styled.div`
 export const BuyTextContainer = styled.span`
   animation: ${fadeInButtonText} 0.3s ease-out forwards;
   font-weight: 600;
+`;
+
+export const LoadingWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.primary};
+
+  .spinner {
+    font-size: 2rem;
+    animation: ${spin} 1s linear infinite;
+  }
+`;
+
+export const ErrorWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2a2a2a;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  border-radius: 8px;
+  gap: 8px;
+
+  span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
 `;
