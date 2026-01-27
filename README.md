@@ -1,131 +1,97 @@
-# Teste para Desenvolvedor(a) Front-End Next.js
+🚀 Starsoft NFT Marketplace Challenge
 
-## Introdução
+Este projeto é uma plataforma de marketplace de NFTs desenvolvida como parte de um desafio técnico para Desenvolvedor(a) Front-end. A aplicação foca em alta performance, animações fluidas e uma experiência de compra impecável utilizando o ecossistema moderno do React.
+🛠️ Tecnologias e Decisões Técnicas
 
-Bem-vindo(a) ao processo seletivo para a posição de **Desenvolvedor(a) Front-End** em nossa equipe! Este teste tem como objetivo avaliar suas habilidades técnicas em **Next.js**, **React** e as demais tecnologias mencionadas na descrição da vaga.
+A stack foi escolhida para garantir escalabilidade, tipagem forte e uma UI reativa:
 
-## Instruções
+    Next.js 15+ & React 19: Utilização das versões mais recentes para aproveitar o novo React Compiler e otimizações de renderização.
 
-- Faça um **fork** deste repositório para o seu GitHub pessoal.
-- Desenvolva a aplicação conforme as especificações abaixo, seguindo as **melhores práticas de desenvolvimento**.
-- Após a conclusão, envie o link do seu repositório para avaliação.
-- Sinta-se à vontade para adicionar qualquer documentação ou comentários que julgar necessário.
+    TypeScript: Implementado de forma estrita em todo o projeto para garantir segurança de dados e facilitar a manutenção.
 
-## Desafio
+    Redux Toolkit: Gerenciamento do estado global do carrinho, garantindo fluxo de dados previsível.
 
-### Contexto
+    TanStack Query (React Query) v5: Consumo da API com cache inteligente, estados de loading automatizados e sincronização de dados.
 
-Você foi designado para desenvolver a interface de um **marketplace de NFTs** (Non-Fungible Tokens) com funcionalidades de carrinho de compras. O objetivo é criar uma aplicação web responsiva e interativa que proporcione uma ótima experiência ao usuário, utilizando **Next.js** como framework principal.
+    Styled Components: Estilização scoped e dinâmica, permitindo o uso de temas e transient props para evitar conflitos no DOM.
 
-### Requisitos
+    Framer Motion: Orquestração de micro-interações, transições de estado e o comportamento complexo de saída de componentes.
 
-1. **Uso do Next.js**
+    Jest & React Testing Library: Suíte de testes para garantir a estabilidade das principais regras de negócio.
 
-   - Utilize **Next.js** como o framework principal da aplicação.
-   - Aproveite os recursos do Next.js, como:
-     - **Renderização no Lado do Servidor (SSR)** e/ou **Geração de Sites Estáticos (SSG)** para otimizar o carregamento das páginas.
-     - **Rotas Dinâmicas** para páginas de detalhes dos NFTs.
-     - **Next.js API Routes** se necessário para funcionalidades adicionais.
-     - **Otimização de Imagens** com o componente `next/image`.
-     - **Importação Dinâmica** para carregamento otimizado de componentes pesados.
+✨ Funcionalidades Implementadas
+🛒 Carrinho de Compras (Mochila)
 
-2. **Interface do Usuário**
+    Sidebar Animada: Surgimento lateral com efeito de mola (spring physics) e animação de entrada/saída via AnimatePresence.
 
-   - Implemente o design fornecido no link do **Figma**:
-     - [Figma Design](https://www.figma.com/design/j9HHfWPPoLyObtlVBeMhTD/Front-end-Challenge?node-id=0-1&t=sWwJ0qlYdwzJHKyJ-0)
-   - Siga fielmente o design e as especificações fornecidas.
-   - Garanta que a aplicação seja **responsiva** e funcione bem em diferentes tamanhos de tela.
-   - Implemente navegação entre as páginas utilizando o sistema de roteamento do Next.js.
+    Contador Dinâmico: O valor total em ETH utiliza o componente AnimatedNumber, que anima a transição numérica para um feedback visual premium.
 
-3. **Gerenciamento de Estado**
+    Animações de Lista: Itens removidos do carrinho possuem animação de colapso e fade, enquanto os itens restantes deslizam suavemente via prop layout.
 
-   - Utilize **Redux** ou **Redux Toolkit** para gerenciar o estado global da aplicação.
-   - Configure a store do Redux e implemente os reducers necessários.
-   - Gerencie estados como itens no carrinho,
+    Acessibilidade: Suporte a fechamento via tecla ESC, bloqueio de scroll do body ao abrir o modal e compensação dinâmica de largura da scrollbar para evitar "pulos" no layout.
 
-4. **Busca de Dados**
+🃏 Cards de Produto e Listagem
 
-   - Use **React Query** para buscar e sincronizar dados da API.
-   - A API está documentada em:
-     - [Starsoft Challenge API Docs](https://starsoft-challenge-7dfd4a56a575.herokuapp.com/v1/docs)
-   - Implemente chamadas para obter a lista de NFTs, detalhes dos itens, etc.
-   - Utilize o **Data Fetching** do Next.js (`getStaticProps`, `getServerSideProps`) conforme adequado.
-   - Trate os estados de **loading**, **sucesso** e **erro** nas requisições.
+    Infinite Scroll: Implementado com o componente PaginationLoader para carregamento fluido.
 
-5. **Animações e Interações**
+    Botão de Ação com Estado: Botão inteligente que gerencia o ciclo: Compra -> Sucesso (Animação de Letras) -> Sweep Effect (Varredura) -> Reset.
 
-   - Utilize **Framer Motion** para adicionar animações e interações conforme necessário.
-   - Garanta que as animações sejam suaves e contribuam para a experiência do usuário.
-   - Implemente animações em transições de página, hover em botões e cards, entre outros.
+    Feedback Visual: Tratamento de estados de carregamento com Skeleton Loaders e fallbacks para imagens com erro.
 
-6. **Estilização**
+🧪 Qualidade de Código e Testes
 
-   - Use **SASS** ou **Styled Components** para estilizar a aplicação.
-   - Organize os estilos de maneira modular e reutilizável.
-   - Siga as boas práticas de organização de arquivos e componentes.
-   - Garanta a consistência visual em toda a aplicação.
+    Clean Code: Separação clara entre componentes de apresentação, lógica de estado e serviços de API.
 
-7. **Configuração com Docker**
+    Testes Abrangentes: Cobertura de componentes críticos (Header, Button, Modal, Pagination) com mocks de Redux e Framer Motion.
 
-   - Configure o ambiente de desenvolvimento utilizando **Docker** e **Docker Compose**.
-   - Crie um arquivo `Dockerfile` para a aplicação Next.js.
-   - Crie um arquivo `docker-compose.yml` para orquestrar os serviços necessários.
-   - A aplicação deve ser iniciada com um único comando (`docker-compose up`).
-   - Documente quaisquer configurações específicas necessárias.
+🚀 Como Executar o Projeto
+via Docker (Recomendado)
 
-8. **Boas Práticas de Código**
+A aplicação está totalmente dockerizada para garantir consistência entre ambientes.
+Bash
 
-   - Aplique os princípios de **Clean Code** em toda a sua implementação.
-   - Utilize um padrão de código consistente e configure **ESLint** e **Prettier** no projeto.
-   - Documente o código quando necessário para melhorar a legibilidade.
-   - Utilize os recursos do **Next.js** para otimização, como importação dinâmica e otimização de imagens.
+# Iniciar a aplicação e serviços
 
-9. **Testes**
+docker-compose up --build
 
-   - Escreva testes unitários e/ou de integração para as principais funcionalidades da aplicação utilizando **Jest** e **React Testing Library**.
-   - Os testes devem cobrir, no mínimo, os componentes principais e funcionalidades críticas.
-   - Garanta que todos os testes passem antes de enviar o projeto.
+Acesse em: http://localhost:3000
+Localmente
+Bash
 
-### Diferenciais (Desejável)
+🧪 Executando Testes
+Bash
 
-- **TypeScript**
+# Rodar todos os testes
 
-  - Utilize **TypeScript** para adicionar tipagem estática ao seu código, aumentando a robustez e manutenção do projeto.
+npm run test
 
-- **SEO e Acessibilidade**
+# Gerar relatório de cobertura (coverage)
 
-  - Implemente boas práticas de **SEO** e **acessibilidade** na aplicação.
-  - Utilize o componente `next/head` para manipulação de meta tags.
-  - Otimize a performance da aplicação seguindo as recomendações do **Lighthouse**.
+npm test -- --coverage
 
-## Entrega
+📁 Estrutura do Projeto
+Plaintext
 
-- O código deve estar disponível em um repositório Git (preferencialmente **GitHub**) público.
-- Inclua um arquivo `README.md` com:
-  - Instruções claras sobre como configurar e executar a aplicação.
-  - Descrição das funcionalidades implementadas.
-  - Tecnologias utilizadas e justificativas de escolhas técnicas.
-  - Possíveis limitações ou melhorias futuras.
-- Certifique-se de que o histórico de commits reflita o andamento do desenvolvimento, com mensagens claras e objetivas.
+src/
+├── _tests_/ # Arquivos de testes unitários e de integração
+├── components/ # Componentes globais (Button, Modal, Header, Footer)
+├── pages/ # Rotas e páginas da aplicação (Next.js)
+├── services/ # Configuração do Axios e chamadas de API
+├── store/ # Configuração Redux Toolkit e Slices (cartSlice)
+├── styles/ # Temas, globais e configurações do Styled Components
+├── types/ # Interfaces e tipos globais do TypeScript
+├── utils/ # Helpers
 
-## Avaliação
+📈 Melhorias Futuras
 
-Os seguintes aspectos serão considerados na avaliação:
+    Persistência de Dados: Implementar redux-persist para manter o carrinho mesmo após o fechamento do navegador.
 
-- **Uso do Next.js**: Aproveitamento adequado dos recursos e features do Next.js na aplicação.
-- **Fidelidade ao Design**: A interface deve ser fiel ao design fornecido no Figma.
-- **Funcionalidade**: A aplicação deve estar funcional e todas as interações devem estar implementadas corretamente.
-- **Gerenciamento de Estado**: O uso de Redux para gerenciamento de estado deve ser eficiente e bem estruturado.
-- **Busca de Dados**: A integração com a API usando React Query e Next.js deve ser feita corretamente.
-- **Animações e Interações**: As animações devem ser suaves e bem integradas na experiência do usuário.
-- **Código Limpo**: O código deve ser limpo, seguindo boas práticas de desenvolvimento e princípios de Clean Code.
-- **Estilização**: A aplicação deve ser estilizada usando SASS de forma modular e reutilizável.
-- **Testes**: Qualidade e abrangência dos testes implementados.
-- **Configuração com Docker**: A configuração do ambiente de desenvolvimento utilizando Docker e Docker Compose deve ser clara e funcional.
-- **Documentação**: Clareza das instruções e documentação fornecidas no `README.md`.
-- **Histórico de Commits**: Uso adequado do Git com commits bem descritos.
+    Dark Mode: Implementar alternância de temas aproveitando a estrutura já existente do ThemeProvider.
 
----
+    SEO Avançado: Adicionar meta-tags dinâmicas e JSON-LD para melhor indexação de NFTs em motores de busca.
 
-Boa sorte! Estamos ansiosos para conhecer o seu trabalho e potencial.
+Desenvolvedor: João Vitor de For dos Santos.
 
+Link do Figma Seguido: [Figma Design](https://www.figma.com/design/j9HHfWPPoLyObtlVBeMhTD/Front-end-Challenge?node-id=6-898&t=ba0dh4Ui2tE1MBRX-1)
+
+API: https://api-challenge.starsoft.games/api/v1
