@@ -1,6 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
 export const Overlay = styled(motion.div)`
   position: fixed;
   inset: 0;
@@ -40,6 +45,7 @@ export const ItemImage = styled.div`
   border-radius: 6px;
   position: relative;
   flex-shrink: 0;
+  overflow: hidden;
 `;
 
 export const ItemInfo = styled.div`
@@ -182,4 +188,35 @@ export const ActionRow = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
+`;
+
+export const LoadingWrapper = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.primary};
+
+  .spinner {
+    font-size: 1.5rem;
+    animation: ${spin} 1s linear infinite;
+  }
+`;
+
+export const ErrorWrapper = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2a2a2a;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  gap: 4px;
+
+  span {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+  }
 `;

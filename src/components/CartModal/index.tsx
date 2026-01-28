@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { FaTrash, FaEthereum, FaArrowLeft } from 'react-icons/fa';
+import { FaTrash, FaSpinner, FaArrowLeft, FaBoxOpen } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 
@@ -16,6 +16,46 @@ interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const CartItemImage = ({ src, name }: { src: string; name: string }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <S.ItemImage>
+      {isLoading && !hasError && (
+        <S.LoadingWrapper>
+          <FaSpinner className="spinner" />
+        </S.LoadingWrapper>
+      )}
+
+      {hasError && (
+        <S.ErrorWrapper>
+          <FaBoxOpen size={24} />
+          <span>Erro</span>
+        </S.ErrorWrapper>
+      )}
+
+      {!hasError && (
+        <Image
+          src={src}
+          alt={name}
+          fill
+          style={{
+            objectFit: 'contain',
+            padding: '5px',
+            opacity: isLoading ? 0 : 1,
+          }}
+          onLoad={() => setIsLoading(false)}
+          onError={() => {
+            setHasError(true);
+            setIsLoading(false);
+          }}
+        />
+      )}
+    </S.ItemImage>
+  );
+};
 
 export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   const dispatch = useDispatch();
@@ -84,14 +124,7 @@ export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <S.ItemImage>
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        style={{ objectFit: 'contain', padding: '8px' }}
-                      />
-                    </S.ItemImage>
+                    <CartItemImage src={item.image} name={item.name} />
 
                     <S.ItemInfo>
                       <div>
