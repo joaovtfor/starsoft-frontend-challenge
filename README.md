@@ -61,6 +61,14 @@ Bash
 🧪 Executando Testes
 Bash
 
+# Executar testes no docker
+
+docker-compose exec app npm run test
+
+# Instalar dependências
+
+npm install
+
 # Rodar todos os testes
 
 npm run test
